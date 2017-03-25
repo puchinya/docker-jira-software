@@ -14,7 +14,7 @@ ENV JIRA_SECURE="true"
 
 LABEL Description="This image is used to start Atlassian Jira Software" Vendor="Atlassian" Version="${JIRA_VERSION}"
 
-ENV JIRA_DOWNLOAD_URL https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-{JIRA_VERSION}.tar.gz
+ENV JIRA_DOWNLOAD_URL https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-＄{JIRA_VERSION}.tar.gz
 
 ENV MYSQL_VERSION 5.1.38
 ENV MYSQL_DRIVER_DOWNLOAD_URL http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_VERSION}.tar.gz
@@ -38,7 +38,7 @@ RUN set -x \
     && chown -R daemon:daemon  "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_INSTALL}/conf/Catalina" \
     && curl -Ls                "${JIRA_DOWNLOAD_URL}" | tar -xz --directory "${JIRA_INSTALL}" --strip-components=1 --no-same-owner \
-    && curl -Ls                "${MYSQL_DRIVER_DOWNLOAD_URL}" | tar -xz --directory "${JIRA_INSTALL}/lib" --strip-components=1 --no-same-owner "mysql-connector-java-5.1.38/mysql-connector-java-5.1.38-bin.jar" \
+    && curl -Ls                "${MYSQL_DRIVER_DOWNLOAD_URL}" | tar -xz --directory "${JIRA_INSTALL}/lib" --strip-components=1 --no-same-owner "mysql-connector-java-${MYSQL_VERSION}/mysql-connector-java-${MYSQL_VERSION}-bin.jar" \
     && chmod -R 700            "${JIRA_INSTALL}/conf" \
     && chmod -R 700            "${JIRA_INSTALL}/logs" \
     && chmod -R 700            "${JIRA_INSTALL}/temp" \
