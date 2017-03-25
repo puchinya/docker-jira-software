@@ -14,7 +14,7 @@ ENV JIRA_SECURE="true"
 
 LABEL Description="This image is used to start Atlassian Jira Software" Vendor="Atlassian" Version="${JIRA_VERSION}"
 
-ENV JIRA_DOWNLOAD_URL https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-＄{JIRA_VERSION}.tar.gz
+ENV JIRA_DOWNLOAD_URL https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-${JIRA_VERSION}.tar.gz
 
 ENV MYSQL_VERSION 5.1.38
 ENV MYSQL_DRIVER_DOWNLOAD_URL http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_VERSION}.tar.gz
