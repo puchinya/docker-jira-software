@@ -5,7 +5,7 @@ MAINTAINER puchinya
 # Configuration variables.
 ENV JIRA_HOME     /var/atlassian/application-data/jira
 ENV JIRA_INSTALL  /opt/atlassian/jira
-ENV JIRA_VERSION  7.5.0
+ENV JIRA_VERSION  7.8.0
 
 ENV JIRA_PROXY_NAME="localhost"
 ENV JIRA_PROXY_PORT="443"
