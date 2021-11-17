@@ -52,7 +52,11 @@ RUN mkdir -p                   "${JIRA_HOME}" \
     && touch -d "@0"           "${JIRA_INSTALL}/conf/server.xml"
 
 
-RUN cp ${JIRA_INSTALL}/conf/server.xml ${JIRA_INSTALL}/conf/server.xml.dist && chown -R ${RUN_USER}:${RUN_GROUP}  ${JIRA_INSTALL}/conf/server.xml.dist
+# RUN cp ${JIRA_INSTALL}/conf/server.xml ${JIRA_INSTALL}/conf/server.xml.dist && chown -R ${RUN_USER}:${RUN_GROUP}  ${JIRA_INSTALL}/conf/server.xml.dist
+
+RUN curl http://secure.globalsign.com/cacert/gsrsaovsslca2018.crt --output gsrsaovsslca2018.crt \
+    && keytool -import -cacerts -storepass changeit -alias GlobalSignRootCA -file gsrsaovsslca2018.crt \
+    && rm -f gsrsaovsslca2018.crt
 
 # Use the default unprivileged account. This could be considered bad practice
 # on systems where multiple processes end up being executed by 'daemon' but
