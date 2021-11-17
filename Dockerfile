@@ -1,11 +1,11 @@
 
-FROM java:openjdk-8-jre
+FROM adoptopenjdk/openjdk11
 MAINTAINER puchinya
 
 # Configuration variables.
 ENV JIRA_HOME     /var/atlassian/application-data/jira
 ENV JIRA_INSTALL  /opt/atlassian/jira
-ENV JIRA_VERSION  8.1
+ENV JIRA_VERSION  8.1.0
 
 ENV JIRA_PROXY_NAME="localhost"
 ENV JIRA_PROXY_PORT="443"
@@ -27,12 +27,12 @@ ENV RUN_GROUP           daemon
 
 # Install Atlassian JIRA and helper tools and setup initial home
 # directory structure.
-RUN set -x \
-    && apt-get update --quiet \
-    && apt-get install --quiet --yes --no-install-recommends xmlstarlet \
-    && apt-get install --quiet --yes --no-install-recommends -t jessie-backports libtcnative-1 \
-    && apt-get clean \
-    && mkdir -p                "${JIRA_HOME}" \
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends fontconfig python3 python3-jinja2 tini \
+    && apt-get clean autoclean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p                   "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_HOME}/caches/indexes" \
     && chmod -R 700            "${JIRA_HOME}" \
     && chown -R daemon:daemon  "${JIRA_HOME}" \
@@ -50,6 +50,9 @@ RUN set -x \
     && sed --in-place          "s/java version/openjdk version/g" "${JIRA_INSTALL}/bin/check-java.sh" \
     && echo -e                 "\njira.home=$JIRA_HOME" >> "${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties" \
     && touch -d "@0"           "${JIRA_INSTALL}/conf/server.xml"
+
+
+RUN cp ${JIRA_INSTALL}/conf/server.xml ${JIRA_INSTALL}/conf/server.xml.dist && chown -R ${RUN_USER}:${RUN_GROUP}  ${JIRA_INSTALL}/conf/server.xml.dist
 
 # Use the default unprivileged account. This could be considered bad practice
 # on systems where multiple processes end up being executed by 'daemon' but
